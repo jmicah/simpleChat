@@ -1,0 +1,40 @@
+
+.chatWindowContainer {
+	float: left;	
+}
+
+.chatWindow {
+	border: solid thin black;
+	width: 800px;
+	height: 600px;
+}
+
+.userWindowContainer {
+	float: right;	
+}
+
+.userWindow {
+	border: solid thin black;
+	float: right;
+	width: 300px;
+	height: 600px;
+}
+
+.inputFieldContainer {
+	float: right;
+	margin-top: 15px;
+}
+
+.inputField {
+	width: 600px;
+	height: 50px; 
+}
+
+.message {
+	width: 100%;
+	background: #efefef
+}
+
+.message:nth-child(2) {
+	background: #aaaaaa;
+}
