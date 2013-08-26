@@ -1,10 +1,13 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
+import models.ChatRoom;
+import play.Logger;
 import play.libs.F.Callback;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.WebSocket;
 
-import views.html.*;
+import views.html.index;
 
 public class Application extends Controller {
   
@@ -14,7 +17,8 @@ public class Application extends Controller {
 
     
     public static WebSocket<String> socketHandler() {
-		return new WebSocket<String>() {
+		
+    	return new WebSocket<String>() {
 			
 			public void onReady(WebSocket.In<String> in,
 								final WebSocket.Out<String> out) {
@@ -23,17 +27,11 @@ public class Application extends Controller {
 				String[] splitUserString = getUserString.split("@");
 				final String userString = splitUserString[1];
 				
-				in.onMessage(new Callback<String>() {
-					public void invoke(String event) {
-					
-					    Logger.info(userString + ": " + event);
-						out.write(" <p class='message'>"+userString+": "+event+"</p>");
-					
-					
-					}
-				});
-				
-				
+				try { 
+                    ChatRoom.join(userString, in, out);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 				
 			}
 			

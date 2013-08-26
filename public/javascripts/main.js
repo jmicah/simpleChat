@@ -12,8 +12,9 @@ function setWebsockets(rout) {
 			}
 			
 			 
-			$(".inputField").keypress(function(e) {
-				if(e.charCode == 13) {				
+			$(".inputField").keypress(function(event) {
+				var keycode = (event.keyCode ? event.keyCode : event.which);
+				if(keycode == '13' && !event.shiftKey){				
 					var message = $(".inputField").val();
 					$(".inputField").val("");
 					socket.send(message);
