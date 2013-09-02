@@ -1,3 +1,6 @@
+.mainSection {
+	display: none;
+}
 
 .chatWindowContainer {
 	float: left;	

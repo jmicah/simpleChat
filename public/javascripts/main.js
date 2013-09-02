@@ -1,26 +1,52 @@
 function setWebsockets(rout) {
-        	
+        	var username = $(".username").val();
+        
 			var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
 			var socket = new WS(rout);
 			
-			socket.onMessage = function(event) {
-				$(".chatWindow").append(event.data);
-			}
+			$(".setUsername").click(function() {
+				username = $(".username").val();
+				if(username != ""){
+					var socketMsg = '{"action": "CONNECT", "user": "'+ username +'"}'
+					socket.send(socketMsg);
+				}
+				
+			});
 			
 			socket.onmessage = function(event) {
-				$(".chatWindow").append(event.data);
+				//
+				
+				var message = $.parseJSON(event.data);
+				
+				if(message.action == "ERROR") {
+					if(message.type == "already a user by that name"){
+						$(".username").val("");
+						$(".setUsername").html("Try Another");
+					}
+				}
+				
+				if(message.action == "WELCOME") {
+					$(".mainSection").show(300);
+					$(".setUsername").html("Log Out");
+					$(".chatWindow").append("<h3>Welcome "+ username +", you have connected to the chat client!</h3>");
+				}
+				
+				if(message.action == "TALK") {
+					$(".chatWindow").append(message.message);
+				}
+				
+				
 			}
 			
 			 
 			$(".inputField").keypress(function(event) {
 				var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13' && !event.shiftKey){				
-					var message = $(".inputField").val();
+					var message = $(".inputField").val(); 
+					var socketMsg = '{"action": "TALK", "user": "'+ username +'", "talk": "' + message + '"}'
 					$(".inputField").val("");
-					socket.send(message);
-					//$(".chatWindow").append("<br>" + message);
+					socket.send(socketMsg);
+					$(".chatWindow").append("<p class='message'>you: " + message + "</p>");
 				}
-			
-			});
-			
+			});	
 		}

@@ -1,5 +1,7 @@
 package controllers;
 
+import org.codehaus.jackson.*;
+
 import models.ChatRoom;
 import play.Logger;
 import play.libs.F.Callback;
@@ -16,19 +18,20 @@ public class Application extends Controller {
     }
 
     
-    public static WebSocket<String> socketHandler() {
+    public static WebSocket<String> socketHandler(final String username) {
 		
     	return new WebSocket<String>() {
 			
 			public void onReady(WebSocket.In<String> in,
 								final WebSocket.Out<String> out) {
 				
-				String getUserString = this.toString();
-				String[] splitUserString = getUserString.split("@");
-				final String userString = splitUserString[1];
 				
-				try { 
-                    ChatRoom.join(userString, in, out);
+				//System.out.println("current socket is: " + this.toString());
+				
+				try {
+					ChatRoom.socketRouter(this, in, out);
+                    //ChatRoom.join(this.toString(), in, out);
+                    //ChatRoom.talk(this, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
