@@ -25,13 +25,9 @@ public class Application extends Controller {
 			public void onReady(WebSocket.In<String> in,
 								final WebSocket.Out<String> out) {
 				
-				
 				//System.out.println("current socket is: " + this.toString());
-				
 				try {
 					ChatRoom.socketRouter(this, in, out);
-                    //ChatRoom.join(this.toString(), in, out);
-                    //ChatRoom.talk(this, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -6,11 +6,15 @@ function setWebsockets(rout) {
 			
 			$(".setUsername").click(function() {
 				username = $(".username").val();
-				if(username != ""){
-					var socketMsg = '{"action": "CONNECT", "user": "'+ username +'"}'
+				if(!$(this).hasClass("connected")) {
+					if(username != ""){
+						var socketMsg = '{"action": "CONNECT", "user": "'+ username +'"}'
+						socket.send(socketMsg);
+					}
+				} else {
+					var socketMsg = '{"action": "DISCONNECT", "user": "'+ username +'"}'
 					socket.send(socketMsg);
 				}
-				
 			});
 			
 			socket.onmessage = function(event) {
@@ -25,14 +29,35 @@ function setWebsockets(rout) {
 					}
 				}
 				
-				if(message.action == "WELCOME") {
+				if(message.action == "CONNECT") {
+					$(".username").hide();
+					$(".displayUsername").html(username);
 					$(".mainSection").show(300);
-					$(".setUsername").html("Log Out");
-					$(".chatWindow").append("<h3>Welcome "+ username +", you have connected to the chat client!</h3>");
+					$(".setUsername").html("Log Out").addClass("connected");
+					$(".chatWindow").append("<h5>Welcome "+ username +", you have connected to the chat client!</h5>");
 				}
 				
 				if(message.action == "TALK") {
-					$(".chatWindow").append(message.message);
+					$(".chatWindow").append("<p class='message'>"+message.user +": "+ message.talk+"</p>");
+					$(".chatWindow").scrollTop($(".chatWindow")[0].scrollHeight);
+				}
+				
+				if(message.action == "UPDATE_USERS") {
+					console.log(message.users);
+					$(".userWindow").html("");
+					$(message.users).each(function() {
+						$(".userWindow").append("<p>"+this+"</p>");
+					});
+				}
+				
+				if(message.action == "DISCONNECT") {
+					$(".displayUsername").html("");
+					$(".mainSection").hide(300);
+					$(".username").val("");
+					$(".username").show();
+					$(".chatWindow").html("");
+					$(".userWindow").html("");
+					$(".setUsername").html("Log In").removeClass("connected");
 				}
 				
 				
@@ -47,6 +72,7 @@ function setWebsockets(rout) {
 					$(".inputField").val("");
 					socket.send(socketMsg);
 					$(".chatWindow").append("<p class='message'>you: " + message + "</p>");
+					$(".chatWindow").scrollTop($(".chatWindow")[0].scrollHeight);
 				}
 			});	
 		}

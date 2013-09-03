@@ -1,3 +1,23 @@
+/*
+ * @ Jeremy Huff
+ * @ Micah Cooper
+ *  
+ */
+
+/*
+ * Potential inbound actions:
+ * 	-CONNECT
+ *  -TALK
+ *  -DISCONNECT
+ *  
+ *  
+ *  Potential outbound actions:
+ *   -ERROR
+ *   -CONNECT
+ *   -TALK
+ *   -UPDATE_USERS
+ *   -DISCONNECT
+ */
 package models;
 
 import java.io.IOException;
@@ -32,31 +52,31 @@ public class ChatRoom {
 				JsonNode jsonObj = mapper.readTree(event);									
 				String action = jsonObj.path("action").toString();
 				String user = jsonObj.path("user").toString();
-				String message = jsonObj.path("message").toString();
+				String talk = jsonObj.path("talk").toString();
+				System.out.println(action);	
 				
 				if(action.equals("\"CONNECT\"")) {
 					connect(user, in, out);
 				}
 				
-				if(action.equals("\"TALK\"")) {		
-						
-					for(Out<String> socket : sockets.values()) {
-						if(!out.equals(socket)) {
-							socket.write(" <p class='message'>"+user+": "+ message +"</p>");
-						}
-					}
-					
+				if(action.equals("\"TALK\"")) {
+					talk(user, talk, out);					
 				}
 				
 				if(action.equals("\"DISCONNECT\"")) {
-					System.out.println("we are disconnecting");
+					disconnect(user, out);
 				}
 				
 			}
 		});
 	}
+
+
 	
-	
+
+	/*
+	 * This handles the connection to the chat client
+	 */
 	public static void connect(final String user,
 							In<String> in,
 							final Out<String> out) {		
@@ -64,34 +84,40 @@ public class ChatRoom {
 		if(sockets.containsKey(user))	{
 			out.write("{\"action\": \"ERROR\", \"type\": \"already a user by that name\"}");
 		} else {
-			out.write("{\"action\": \"WELCOME\"}");
+			out.write("{\"action\": \"CONNECT\"}");
 			sockets.put(user, out);
-		}
-		
-		
+			Set<String> users = sockets.keySet();
+			String message = "{\"action\": \"UPDATE_USERS\", \"users\": " + users + "}";
+			for(Out<String> socket : sockets.values()) {
+				socket.write(message);
+			}
+		}		
 	}
 	
+	/*
+	 * This handles all chats
+	 */
+	protected static void talk(String user, String talk, Out<String> out) {
+		String message = "{\"action\": \"TALK\", \"user\": " + user + ", \"talk\": "+ talk +"}";
+		for(Out<String> socket : sockets.values()) {
+			if(!out.equals(socket)) {
+				socket.write(message);
+			}
+		}
+	}
 	
-//	public static void talk(final WebSocket<String> webSocket,
-//		WebSocket.In<String> in,
-//	final WebSocket.Out<String> out) {		
-//		in.onMessage(new Callback<String>() {
-//			public void invoke(String event) throws JsonProcessingException, IOException {
-//
-//			ObjectMapper mapper = new ObjectMapper();
-//			JsonNode jsonObj = mapper.readTree(event);									
-//			   String message = jsonObj.path("message").toString();
-//			   String user = jsonObj.path("user").toString();
-//				for(Out<String> socket : sockets.values()) {
-//					if(!out.equals(socket)) {
-//						socket.write(" <p class='message'>"+user+": "+ message +"</p>");
-//					}
-//				}
-//		}
-//
-//		});
-//	
-//	}
-
-
+	/*
+	 * This handles disconnection from the chat client
+	 */
+	protected static void disconnect(String user, Out<String> out) {
+		Out<String> thisSocket = sockets.get(user);
+		thisSocket.write("{\"action\": \"DISCONNECT\"}");
+		sockets.remove(user);
+		Set<String> users = sockets.keySet();
+		String message = "{\"action\": \"UPDATE_USERS\", \"users\": " + users + "}";
+		for(Out<String> socket : sockets.values()) {
+			socket.write(message);
+		}
+	}
+	
 }

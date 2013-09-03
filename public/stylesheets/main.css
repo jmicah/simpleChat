@@ -1,43 +1,62 @@
+body {
+	font-family: sans-serif;
+}
 .mainSection {
 	display: none;
 }
 
 .chatWindowContainer {
-	float: left;	
+	float: left;
+	width: 50%;
+	max-width: 800px;	
 }
 
 .chatWindow {
 	border: solid thin black;
-	width: 800px;
+	width: 100%;
 	height: 600px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding-right: 10px;
 }
 
 .userWindowContainer {
-	float: right;	
+	float: right;
+	width: 20%;
+	max-width: 200px;	
 }
 
 .userWindow {
 	border: solid thin black;
 	float: right;
-	width: 300px;
-	height: 600px;
+	width: 100%;
+	max-height: 560px;
+	padding: 20px;
+}
+
+.userWindow p {
+	margin-bottom: -10px;
 }
 
 .inputFieldContainer {
 	float: right;
 	margin-top: 15px;
+	width: 100%;
 }
 
 .inputField {
-	width: 600px;
+	width: 100%;
 	height: 50px; 
 }
 
 .message {
 	width: 100%;
-	background: #efefef
+	background: #efefef;
+	line-height: 40px;
+	margin-bottom: -16px;
+	padding: 5px;
 }
 
-.message:nth-child(2) {
+.message:nth-child(2n) {
 	background: #aaaaaa;
 }
