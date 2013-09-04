@@ -38,7 +38,7 @@ function setWebsockets(rout) {
 				}
 				
 				if(message.action == "TALK") {
-					$(".chatWindow").append("<p class='message'>"+message.user +": "+ message.talk+"</p>");
+					$(".chatWindow").append("<p class='message'><b>"+message.user +":</b> "+ message.talk+"</p>");
 					$(".chatWindow").scrollTop($(".chatWindow")[0].scrollHeight);
 				}
 				
@@ -66,13 +66,14 @@ function setWebsockets(rout) {
 			 
 			$(".inputField").keypress(function(event) {
 				var keycode = (event.keyCode ? event.keyCode : event.which);
-				if(keycode == '13' && !event.shiftKey){				
+				if(keycode == '13' && !event.shiftKey){
 					var message = $(".inputField").val(); 
 					var socketMsg = '{"action": "TALK", "user": "'+ username +'", "talk": "' + message + '"}'
 					$(".inputField").val("");
 					socket.send(socketMsg);
-					$(".chatWindow").append("<p class='message'>you: " + message + "</p>");
+					$(".chatWindow").append("<p class='message'><b>you:</b> " + message + "</p>");
 					$(".chatWindow").scrollTop($(".chatWindow")[0].scrollHeight);
+					return false;
 				}
 			});	
 		}
