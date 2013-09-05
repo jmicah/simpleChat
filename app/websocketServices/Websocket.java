@@ -4,12 +4,11 @@ import java.util.Map;
 import java.util.Set;
 
 import models.WebsocketRouter;
-
 import play.mvc.WebSocket;
 import play.mvc.WebSocket.In;
 import play.mvc.WebSocket.Out;
 
-public class WebsocketConnectUserService {
+public class Websocket {
 	
 	/*
 	 * This handles the connection to the chat client
@@ -31,6 +30,37 @@ public class WebsocketConnectUserService {
 				socket.write(message);
 			}
 		}		
+	}
+	
+	public static void talk(String user, String talk, Out<String> out) {		
+		
+		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
+		
+
+		String message = "{\"action\": \"TALK\", \"user\": " + user + ", \"talk\": "+ talk +"}";
+		for(Out<String> socket : sockets.values()) {
+			if(!out.equals(socket)) {
+				socket.write(message);
+			}
+		}
+			
+	}
+	
+	public static void disconnect(String user,
+				Out<String> out) {		
+		
+		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
+		
+		
+		Out<String> thisSocket = sockets.get(user);
+		thisSocket.write("{\"action\": \"DISCONNECT\"}");
+		sockets.remove(user);
+		Set<String> users = sockets.keySet();
+		String message = "{\"action\": \"UPDATE_USERS\", \"users\": " + users + "}";
+		for(Out<String> socket : sockets.values()) {
+		socket.write(message);
+		
+		}
 	}
 
 }

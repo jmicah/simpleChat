@@ -21,9 +21,7 @@ import play.libs.F.Callback;
 import play.mvc.WebSocket;
 import play.mvc.WebSocket.In;
 import play.mvc.WebSocket.Out;
-import websocketServices.WebsocketConnectUserService;
-import websocketServices.WebsocketDisconnectUserService;
-import websocketServices.WebsocketTalkService;
+import websocketServices.Websocket;
 
 
 public class WebsocketRouter {
@@ -46,15 +44,15 @@ public class WebsocketRouter {
 				String talk = jsonObj.path("talk").toString();
 				
 				if(action.equals("\"CONNECT\"")) {
-					WebsocketConnectUserService.connect(user, in, out);
+					Websocket.connect(user, in, out);
 				}
 				
 				if(action.equals("\"TALK\"")) {
-					WebsocketTalkService.talk(user, talk, out);					
+					Websocket.talk(user, talk, out);					
 				}
 				
 				if(action.equals("\"DISCONNECT\"")) {
-					WebsocketDisconnectUserService.disconnect(user, out);
+					Websocket.disconnect(user, out);
 				}
 				
 			}
@@ -64,7 +62,6 @@ public class WebsocketRouter {
 
 
 	public static Map<String, WebSocket.Out<String>> getSockets() {
-		//return this.sockets;
 		return sockets;
 	}
 	
