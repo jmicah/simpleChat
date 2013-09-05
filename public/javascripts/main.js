@@ -43,7 +43,6 @@ function setWebsockets(rout) {
 				}
 				
 				if(message.action == "UPDATE_USERS") {
-					console.log(message.users);
 					$(".userWindow").html("");
 					$(message.users).each(function() {
 						$(".userWindow").append("<p>"+this+"</p>");

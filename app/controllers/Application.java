@@ -2,7 +2,7 @@ package controllers;
 
 import org.codehaus.jackson.*;
 
-import models.ChatRoom;
+import models.WebsocketRouter;
 import play.Logger;
 import play.libs.F.Callback;
 import play.mvc.Controller;
@@ -25,13 +25,12 @@ public class Application extends Controller {
 			public void onReady(WebSocket.In<String> in,
 								final WebSocket.Out<String> out) {
 				
-				//System.out.println("current socket is: " + this.toString());
 				try {
-					ChatRoom.socketRouter(this, in, out);
+					WebsocketRouter.socketRouter(this, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-				
+
 			}
 			
 		};
