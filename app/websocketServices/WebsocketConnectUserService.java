@@ -14,7 +14,7 @@ public class WebsocketConnectUserService {
 	/*
 	 * This handles the connection to the chat client
 	 */
-	public static void connect(/*ChatRoom chatroom,*/ String user,
+	public static void connect(String user,
 							In<String> in,
 							Out<String> out) {		
 		//Map<String, WebSocket.Out<String>> sockets = chatroom.getSockets();

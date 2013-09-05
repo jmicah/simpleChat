@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import models.WebsocketRouter;
-
 import play.mvc.WebSocket;
 import play.mvc.WebSocket.In;
 import play.mvc.WebSocket.Out;
@@ -14,9 +13,9 @@ public class WebsocketDisconnectUserService {
 	/*
 	 * This handles the connection to the chat client
 	 */
-	public static void disconnect(WebsocketRouter chatroom, String user,
+	public static void disconnect(String user,
 							Out<String> out) {		
-		Map<String, WebSocket.Out<String>> sockets = chatroom.getSockets();
+		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
 		
 
 		Out<String> thisSocket = sockets.get(user);

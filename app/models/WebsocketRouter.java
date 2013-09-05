@@ -46,15 +46,15 @@ public class WebsocketRouter {
 				String talk = jsonObj.path("talk").toString();
 				
 				if(action.equals("\"CONNECT\"")) {
-					WebsocketConnectUserService.connect(/*thisChatroom, */user, in, out);
+					WebsocketConnectUserService.connect(user, in, out);
 				}
 				
 				if(action.equals("\"TALK\"")) {
-					WebsocketTalkService.talk(thisChatroom, user, talk, out);					
+					WebsocketTalkService.talk(user, talk, out);					
 				}
 				
 				if(action.equals("\"DISCONNECT\"")) {
-					WebsocketDisconnectUserService.disconnect(thisChatroom, user, out);
+					WebsocketDisconnectUserService.disconnect(user, out);
 				}
 				
 			}
