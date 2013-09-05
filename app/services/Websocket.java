@@ -4,7 +4,7 @@
  *  
  */
 
-package websocketServices;
+package services;
 
 import java.util.Map;
 import java.util.Set;
@@ -32,9 +32,11 @@ public class Websocket {
 			sockets.put(user, out);
 			Set<String> users = sockets.keySet();
 			String message = "{\"action\": \"UPDATE_USERS\", \"users\": " + users + "}";
+			
 			for(Out<String> socket : sockets.values()) {
 				socket.write(message);
 			}
+			
 		}		
 	}
 	
@@ -45,8 +47,8 @@ public class Websocket {
 		
 		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
 		
-
 		String message = "{\"action\": \"TALK\", \"user\": " + user + ", \"talk\": "+ talk +"}";
+		
 		for(Out<String> socket : sockets.values()) {
 			if(!out.equals(socket)) {
 				socket.write(message);
@@ -63,16 +65,31 @@ public class Websocket {
 		
 		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
 		
-		
 		Out<String> thisSocket = sockets.get(user);
 		thisSocket.write("{\"action\": \"DISCONNECT\"}");
 		sockets.remove(user);
 		Set<String> users = sockets.keySet();
 		String message = "{\"action\": \"UPDATE_USERS\", \"users\": " + users + "}";
 		for(Out<String> socket : sockets.values()) {
+		
 		socket.write(message);
 		
 		}
 	}
 
+	/*
+	 * This handles the disconnection from the chat client
+	 */
+	public static void heartbeat(String user,
+				String talk, In<String> in, Out<String> out) {		
+		
+		String response ="dub";
+		
+		System.out.println(user+" "+talk+" "+response);	
+		
+		out.write("{\"action\": \"HEARTBEAT\", \"message\": " + response + "}");		
+			
+	}
+	
+	
 }

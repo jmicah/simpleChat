@@ -9,19 +9,12 @@ package models;
 import java.io.IOException;
 import java.util.*;
 
-import play.api.Logger;
-import play.api.libs.json.JsValue;
-import play.libs.Json;
-import play.libs.Json.*;                        
-import static play.libs.Json.toJson;
 import org.codehaus.jackson.*;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import play.libs.F.Callback;
 import play.mvc.WebSocket;
-import play.mvc.WebSocket.In;
-import play.mvc.WebSocket.Out;
-import websocketServices.Websocket;
+import services.Websocket;
 
 
 public class WebsocketRouter {
@@ -51,6 +44,10 @@ public class WebsocketRouter {
 				
 				if(action.equals("\"DISCONNECT\"")) {
 					Websocket.disconnect(user, out);
+				}
+				
+				if(action.equals("\"HEARTBEAT\"")) {
+					Websocket.heartbeat(user, talk, in, out);					
 				}
 				
 			}
