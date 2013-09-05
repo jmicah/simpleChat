@@ -21,9 +21,9 @@ function setWebsockets(rout) {
 				//
 				
 				var message = $.parseJSON(event.data);
-				
-				if(message.action == "ERROR") {
-					if(message.type == "already a user by that name"){
+				console.log(message)
+				if(message.action == "RESPONSE_STATUS") {
+					if(message.type == "dupeUserError"){
 						$(".username").val("");
 						$(".setUsername").html("Try Another");
 					}
@@ -61,8 +61,7 @@ function setWebsockets(rout) {
 				
 				
 			}
-			
-			 
+				 
 			$(".inputField").keypress(function(event) {
 				var keycode = (event.keyCode ? event.keyCode : event.which);
 				if(keycode == '13' && !event.shiftKey){

@@ -1,6 +1,6 @@
 /*
- * @ Jeremy Huff
- * @ Micah Cooper
+ * @author Jeremy Huff
+ * @author Micah Cooper
  *  
  */
 
@@ -29,11 +29,9 @@ public class WebsocketRouter {
 	final static Map<String, WebSocket.Out<String>> sockets = new HashMap<String, WebSocket.Out<String>>();
 
 	
-	public static void socketRouter(final WebSocket<String> webSocket,
+	public static void rout(final WebSocket<String> webSocket,
 			final play.mvc.WebSocket.In<String> in, final play.mvc.WebSocket.Out<String> out) {
-		
-		final WebsocketRouter thisChatroom = new WebsocketRouter();
-		
+				
 		in.onMessage(new Callback<String>() {
 			public void invoke(String event) throws JsonProcessingException, IOException {
 

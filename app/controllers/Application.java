@@ -1,3 +1,9 @@
+/*
+ * @author Jeremy Huff
+ * @author Micah Cooper
+ *  
+ */
+
 package controllers;
 
 import org.codehaus.jackson.*;
@@ -26,7 +32,7 @@ public class Application extends Controller {
 								final WebSocket.Out<String> out) {
 				
 				try {
-					WebsocketRouter.socketRouter(this, in, out);
+					WebsocketRouter.rout(this, in, out);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

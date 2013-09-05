@@ -1,3 +1,9 @@
+/*
+ * @author Jeremy Huff
+ * @author Micah Cooper
+ *  
+ */
+
 package websocketServices;
 
 import java.util.Map;
@@ -16,11 +22,11 @@ public class Websocket {
 	public static void connect(String user,
 							In<String> in,
 							Out<String> out) {		
-		//Map<String, WebSocket.Out<String>> sockets = chatroom.getSockets();
+		
 		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
 		
 		if(sockets.containsKey(user))	{
-			out.write("{\"action\": \"ERROR\", \"type\": \"already a user by that name\"}");
+			out.write("{\"action\": \"RESPONSE_STATUS\", \"status\": \"ERROR\", \"type\": \"dupeUserError\"}");
 		} else {
 			out.write("{\"action\": \"CONNECT\"}");
 			sockets.put(user, out);
@@ -32,6 +38,9 @@ public class Websocket {
 		}		
 	}
 	
+	/*
+	 * This handles chat message broadcasting
+	 */
 	public static void talk(String user, String talk, Out<String> out) {		
 		
 		Map<String, WebSocket.Out<String>> sockets = WebsocketRouter.getSockets();
@@ -46,6 +55,9 @@ public class Websocket {
 			
 	}
 	
+	/*
+	 * This handles the disconnection from the chat client
+	 */
 	public static void disconnect(String user,
 				Out<String> out) {		
 		
