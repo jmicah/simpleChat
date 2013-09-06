@@ -14,7 +14,7 @@ import play.mvc.WebSocket;
 import play.mvc.WebSocket.In;
 import play.mvc.WebSocket.Out;
 
-public class Websocket {
+public class WebsocketService {
 	
 	/*
 	 * This handles the connection to the chat client

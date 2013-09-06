@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import play.libs.F.Callback;
 import play.mvc.WebSocket;
-import services.Websocket;
+import services.WebsocketService;
 
 
 public class WebsocketRouter {
@@ -35,19 +35,19 @@ public class WebsocketRouter {
 				String talk = jsonObj.path("talk").toString();
 				
 				if(action.equals("\"CONNECT\"")) {
-					Websocket.connect(user, in, out);
+					WebsocketService.connect(user, in, out);
 				}
 				
 				if(action.equals("\"TALK\"")) {
-					Websocket.talk(user, talk, out);					
+					WebsocketService.talk(user, talk, out);					
 				}
 				
 				if(action.equals("\"DISCONNECT\"")) {
-					Websocket.disconnect(user, out);
+					WebsocketService.disconnect(user, out);
 				}
 				
 				if(action.equals("\"HEARTBEAT\"")) {
-					Websocket.heartbeat(user, talk, in, out);					
+					WebsocketService.heartbeat(user, talk, in, out);					
 				}
 				
 			}
