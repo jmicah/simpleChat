@@ -1,8 +1,20 @@
 function setWebsockets(rout) {
         	var username = $(".username").val();
-        
+        	
 			var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
 			var socket = new WS(rout);
+			
+			var checkConnection = setInterval(function() {
+				
+				if(socket.readyState === 1) {
+					$(".socketStatus").removeClass("disconnected").addClass("connected");
+				} else {
+					$(".socketStatus").addClass("disconnected").removeClass("connected");
+					socket = new WS(rout);
+				};
+				
+			}, 2000);
+			
 			
 			$(".setUsername").click(function() {
 				username = $(".username").val();
@@ -17,11 +29,15 @@ function setWebsockets(rout) {
 				}
 			});
 			
+			console.log(socket.readyState);
+			
 			socket.onmessage = function(event) {
 				//
-				
+				console.log(socket.readyState);
 				var message = $.parseJSON(event.data);
-				console.log(message)
+				
+				console.log(message);
+				
 				if(message.action == "RESPONSE_STATUS") {
 					if(message.type == "dupeUserError"){
 						$(".username").val("");

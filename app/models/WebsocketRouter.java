@@ -21,6 +21,9 @@ public class WebsocketRouter {
 	
 	final static Map<String, WebSocket.Out<String>> sockets = new HashMap<String, WebSocket.Out<String>>();
 
+	public static Map<String, WebSocket.Out<String>> getSockets() {
+		return sockets;
+	}
 	
 	public static void rout(final WebSocket<String> webSocket,
 			final play.mvc.WebSocket.In<String> in, final play.mvc.WebSocket.Out<String> out) {
@@ -56,8 +59,6 @@ public class WebsocketRouter {
 	}
 
 
-	public static Map<String, WebSocket.Out<String>> getSockets() {
-		return sockets;
-	}
+	
 	
 }
