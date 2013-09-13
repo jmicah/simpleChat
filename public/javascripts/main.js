@@ -60,7 +60,9 @@ function setWebsockets(rout) {
 				
 				if(message.action == "UPDATE_USERS") {
 					$(".userWindow").html("");
+					$(".smallUserWindow").html("");
 					$(message.users).each(function() {
+						$(".smallUserWindow").append("<p>"+this+"</p>");
 						$(".userWindow").append("<p>"+this+"</p>");
 					});
 				}
