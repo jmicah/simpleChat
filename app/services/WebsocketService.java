@@ -78,7 +78,7 @@ public class WebsocketService {
 	}
 
 	/*
-	 * This handles the disconnection from the chat client
+	 * A response message to verify connection
 	 */
 	public static void heartbeat(String user,
 				String talk, In<String> in, Out<String> out) {		
